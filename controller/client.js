@@ -1,20 +1,9 @@
+const User = require('../models/User')
+const Client = require('../models/Client')
 const common = require('../common/common')
-const gig = require('../models/Gig')
-const user = require('../models/User')
-const client = require('../models/Client')
-const jwt = require('jsonwebtoken')
 
 module.exports = {
-  
-    clientId: (req, res) => {
-        const id = common.generateClientId()
-        res.send({
-            code: 200, message: 'Success.', data: {
-                client_id: id,
-                client_secret: id
-            }
-        })
-    },
+
     cred: (req, res) => {
         const client_id = common.generateClientId()
         const client_secret = common.generateClientSecret()
@@ -42,29 +31,6 @@ module.exports = {
                 app_name, client_id, client_secret, redirect_uri
             }
         })
-    },
-  
-    token: (req, res) => {
-        const code = req.query.code
-
-        // check in db 
-        if (code) {
-            // remove code from db
-            const token = jwt.sign({ code }, 'SECRET', { expiresIn: '1h' })
-            // save token in db
-            return res.send({
-                code: 200,
-                message: 'Token Success',
-                data: {
-                    access_token: token,
-                    token_type: 'bearer',
-                    uid: 'uid',
-                    account_id: "acid"
-                }
-            })
-        } else {
-            res.send({ code: 403, message: 'Unauthorized' });
-        }
     },
     secure: (req, res) => {
         if (req.token) {
@@ -95,34 +61,9 @@ module.exports = {
             })
         }
     },
-    refreshToken: (req, res) => {
-        res.send({
-            code: 200, message: "Refresh Token success.", data: {
-                refreshToken: common.generateRefreshToken()
-            }
-        })
-    },
-    gigs: (req, res) => {
-
-        gig.findAll({})
-            .then(result => {
-                res.send({
-                    code: 200,
-                    data: result
-                })
-            })
-            .catch(err => {
-                res.send({
-                    code: 500,
-                    message: err
-                })
-            })
-
-
-    },
     clients: (req, res) => {
 
-        client.findAll({})
+        Client.findAll({})
             .then(result => {
                 res.send({
                     code: 200,
@@ -138,7 +79,7 @@ module.exports = {
     },
     users: (req, res) => {
 
-        user.findAll({})
+        User.findAll({})
             .then(result => {
                 res.send({
                     code: 200,
