@@ -15,7 +15,7 @@ router.get('/oauth/secure' , require('../controller/client').secure)
 router.get('/oauth/profile' , require('../controller/client').profile)
 
 // client app routes
-router.post('/create-cred', require('../controller/client').cred)
+router.post('/create-cred', require('../controller/client').createCred)
 router.get('/get-cred', require('../controller/client').getCred)
 
 // List of all users and clients

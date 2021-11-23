@@ -3,8 +3,7 @@ const Client = require('../models/Client')
 const common = require('../common/common')
 
 module.exports = {
-
-    cred: (req, res) => {
+    createCred: (req, res) => {
         const client_id = common.generateClientId()
         const client_secret = common.generateClientSecret()
         const redirect_uri = req.body.redirectUri
