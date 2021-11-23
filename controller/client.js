@@ -43,30 +43,7 @@ module.exports = {
             }
         })
     },
-    code: (req, res) => {
-        const token = req.headers.authorization
-        if (!token) {
-            return res.send({
-                code: 403,
-                message: 'Unauthorized'
-            })
-        } else {
-            const clientId = req.query.client_id
-            const state = req.query.state
-            const redirectUri = req.query.redirect_uri
-            const code = common.generateCode()
-            //save in db
-            return res.send({
-                code: 200,
-                message: 'OK',
-                data: {
-                    url: `${redirectUri}/auth?code=${code}&state=${state}`
-                }
-            })
-            //   return  res.redirect(`${redirectUri}/auth?code=${code}&state=${state}`)
-        }
-
-    },
+  
     token: (req, res) => {
         const code = req.query.code
 
