@@ -2,18 +2,18 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const port = process.env.PORT || 3001
-const router = require('./routes/index')
+const router = require('./routes/route')
 
 const db = require('./db')
 db.authenticate()
-  .then(() => console.log('DB Error.'))
-  .catch(() => console.log('DB Success.'))
+  .then(() => console.log('DB Success.'))
+  .catch(() => console.log('DB Error.'))
 
 const app = express()
+
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use('/api', router)
 
 app.use('/', (req, res) => {

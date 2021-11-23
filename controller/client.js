@@ -1,29 +1,11 @@
-const common = require('../common/index')
+const common = require('../common/common')
 const gig = require('../models/Gig')
 const user = require('../models/User')
 const client = require('../models/Client')
 const jwt = require('jsonwebtoken')
 
 module.exports = {
-    signin: (req, res) => {
-        const userName = req.body.userName
-        const password = req.body.password
-        console.log(req.body)
-        if (userName === "user1" && password == 1234) {
-            return res.send({
-                code: 200,
-                message: 'Login Success',
-                data: {
-                    token: jwt.sign({ userName, password }, 'SECRET', { expiresIn: '1h' })
-                }
-            })
-        } else {
-            return res.send({
-                code: 404,
-                message: 'User not found'
-            })
-        }
-    },
+  
     clientId: (req, res) => {
         const id = common.generateClientId()
         res.send({
@@ -62,22 +44,41 @@ module.exports = {
         })
     },
     code: (req, res) => {
-        const clientId = req.query.client_id
-        const redirectUri = req.query.redirect_uri || "http://localhost:3000"
-        const code = common.generateCode()
-        //save in db
-        res.redirect(`${redirectUri}/auth?code=${code}`)
+        const token = req.headers.authorization
+        if (!token) {
+            return res.send({
+                code: 403,
+                message: 'Unauthorized'
+            })
+        } else {
+            const clientId = req.query.client_id
+            const state = req.query.state
+            const redirectUri = req.query.redirect_uri
+            const code = common.generateCode()
+            //save in db
+            return res.send({
+                code: 200,
+                message: 'OK',
+                data: {
+                    url: `${redirectUri}/auth?code=${code}&state=${state}`
+                }
+            })
+            //   return  res.redirect(`${redirectUri}/auth?code=${code}&state=${state}`)
+        }
+
     },
     token: (req, res) => {
         const code = req.query.code
 
         // check in db 
-        if (true) {
+        if (code) {
             // remove code from db
-            const token = common.generateToken()
+            const token = jwt.sign({ code }, 'SECRET', { expiresIn: '1h' })
             // save token in db
-            res.send({
-                code: 200, message: 'Token Success', data: {
+            return res.send({
+                code: 200,
+                message: 'Token Success',
+                data: {
                     access_token: token,
                     token_type: 'bearer',
                     uid: 'uid',
@@ -85,7 +86,7 @@ module.exports = {
                 }
             })
         } else {
-            res.send({ code: 400, message: 'Invalid auth token' });
+            res.send({ code: 403, message: 'Unauthorized' });
         }
     },
     secure: (req, res) => {
@@ -117,7 +118,6 @@ module.exports = {
             })
         }
     },
-
     refreshToken: (req, res) => {
         res.send({
             code: 200, message: "Refresh Token success.", data: {

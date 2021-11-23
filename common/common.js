@@ -10,8 +10,9 @@ module.exports.generateClientSecret = () => {
 module.exports.generateAppName = () => {
     return "app123"
 }
+
 module.exports.generateCode = () => {
-    return new Array(6).fill(null).map(() => Math.floor(Math.random() * 10)).join('');
+    return new Array(8).fill(null).map(() => Math.floor(Math.random() * 10)).join('');
 }
 module.exports.generateToken = () => {
     return new Array(10).fill(null).map(() => Math.floor(Math.random() * 10)).join('');
