@@ -1,9 +1,7 @@
 const Sequelize = require('sequelize')
-
-const db = require('../db')
+const db = require('../db/db')
 
 const Client = db.define('client' , {
-   
     client_id : {
         type : Sequelize.STRING
     },

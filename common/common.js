@@ -6,11 +6,6 @@ module.exports.generateClientId = () => {
 module.exports.generateClientSecret = () => {
     return uuidv4()
 }
-
-module.exports.generateAppName = () => {
-    return "app123"
-}
-
 module.exports.generateCode = () => {
     return new Array(8).fill(null).map(() => Math.floor(Math.random() * 10)).join('');
 }
