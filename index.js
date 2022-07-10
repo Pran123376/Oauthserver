@@ -7,7 +7,7 @@ const router = require('./routes/route')
 const db = require('./db/db')
 
 db.authenticate()
-  .then(() => console.log('DB Success.'))
+  .then(() => console.log('DB  connected Successfully.'))
   .catch(() => console.log('DB Error.'))
 
 const app = express()
